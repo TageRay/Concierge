@@ -1,0 +1,12 @@
+{
+  "name": "concierge-quote-generator",
+  "version": "1.0.0",
+  "description": "Create professional hotel quotes easily",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,40 @@
+# Development files
+*.log
+.DS_Store
+node_modules/
+.env
+
+# Source maps
+*.map
+
+# Development versions
+css/styles.css
+js/app.js
+
+# Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+Thumbs.db
+.DS_Store
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# Debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build directories
+/dist
+/build
+/out

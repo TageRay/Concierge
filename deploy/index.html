@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Concierge Quote Generator - Create professional hotel quotes easily" />
+  <meta name="theme-color" content="#2c3e50" />
+  <title>Concierge Quote Generator</title>
+  <link rel="stylesheet" href="css/styles.min.css" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+</head>
+<body>
+  <div class="container">
+    <!-- Input Section -->
+    <div class="input-panel">
+      <!-- Replace the Hotel & Stay Details section -->
+      <h2>🏨 Hotel & Stay Details</h2>
+
+      <div class="input-grid">
+        <div class="input-field">
+          <span>Hotel Name</span>
+          <input type="text" id="hotelName" placeholder="e.g., Atlantis The Palm" />
+        </div>
+
+        <div class="input-field">
+          <span>Hotel Stars</span>
+          <select id="hotelStars">
+            <option>5 Star</option>
+            <option>4 Star</option>
+            <option>3 Star</option>
+            <option>2 Star</option>
+            <option>1 Star</option>
+            <option>Apartment</option>
+            <option>Villa</option>
+            <option>Guesthouse</option>
+          </select>
+        </div>
+
+        <div class="input-field">
+          <span>Stay Dates</span>
+          <input type="text" id="dateInput" placeholder="12 July – 18 July" />
+        </div>
+
+        <div class="input-field">
+          <span>Nights</span>
+          <input type="number" id="nightsCount" placeholder="e.g., 6" />
+        </div>
+
+        <div class="input-field">
+          <span>Adults</span>
+          <input type="number" id="numAdults" min="1" value="2" />
+        </div>
+
+        <div class="input-field">
+          <span>Children</span>
+          <input type="number" id="numChildren" min="0" value="0" />
+        </div>
+
+        <div class="input-field">
+          <span>Room Pictures</span>
+          <input type="url" id="hotelPhotos" placeholder="https://example.com/photos" />
+        </div>
+
+        <div class="input-field">
+          <span>Location</span>
+          <input type="url" id="locationLink" placeholder="https://maps.app.goo.gl/..." />
+        </div>
+
+        <div class="input-field">
+          <span>TripAdvisor</span>
+          <input type="url" id="tripAdvisorLink" placeholder="https://tripadvisor.com/..." />
+        </div>
+
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="embedLinks" />
+            Embed Links
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="showEur" />
+            EUR
+          </label>
+        </div>
+      </div>
+
+      <hr />
+      <h2>🛏️ Room Details</h2>
+      <div id="roomsContainer"></div>
+      <div class="button-group">
+        <button id="addRoomBtn" type="button">➕ Add Additional Room</button>
+        <button id="removeRoomBtn" type="button">❌ Remove Last Room</button>
+      </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="preview-panel">
+      <h2>🧾 Live Quote Preview</h2>
+      <pre id="quotePreview"></pre>
+      <button id="copyQuoteBtn">📋 Copy Quote</button>
+    </div>
+  </div>
+
+  <!-- Room Template -->
+  <template id="roomTemplate">
+    <div class="room-block">
+      <h3>✨ Room Option</h3>
+      <label>Room Type:
+        <input type="text" class="room-type" placeholder="e.g., Deluxe Room, King Bed" />
+      </label>
+
+      <label>Meal Plan:
+        <select class="meal-plan">
+          <option>Room Only</option>
+          <option>Breakfast Included</option>
+          <option>Half Board</option>
+          <option>Full Board</option>
+          <option>All Inclusive</option>
+          <option>Ultra All Inclusive</option>
+          <option>Bed & Breakfast</option>
+        </select>
+      </label>
+
+      <label>Refundability:
+        <select class="refund">
+          <option>Refundable</option>
+          <option>Non-Refundable</option>
+          <option>Partially Refundable</option>
+        </select>
+      </label>
+
+      <h4>💲 Entravel.com Pricing</h4>
+      <label>Base Price (USD):
+        <input type="number" class="base-price" />
+      </label>
+
+      <label>Markup Percentage:
+        <select class="markup">
+          <option>0%</option>
+          <option>5%</option>
+          <option>10%</option>
+          <option>15%</option>
+          <option>20%</option>
+          <option>25%</option>
+          <option value="custom">Custom</option>
+        </select>
+        <input type="number" class="markup-custom" style="display:none;" placeholder="Custom %" />
+      </label>
+
+      <label>Calculated Entravel Price (USD):
+        <input type="text" class="calculated-price" readonly />
+      </label>
+
+      <label>Optional Price per Night (USD):
+        <input type="number" class="per-night" />
+      </label>
+
+      <label>Optional Price in Other Currency:
+        <input type="number" class="alt-currency" />
+        <select class="alt-currency-type">
+          <option>EUR</option>
+          <option>GBP</option>
+          <option>AED</option>
+          <option>INR</option>
+        </select>
+      </label>
+
+      <h4>📊 Booking.com Comparison</h4>
+      <label>Booking.com Price (USD):
+        <input type="number" class="booking-price" />
+      </label>
+
+      <label>Optional Price per Night:
+        <input type="number" class="booking-per-night" />
+      </label>
+
+      <label>Optional Price in Other Currency:
+        <input type="number" class="booking-alt-currency" />
+        <select class="booking-alt-currency-type">
+          <option>EUR</option>
+          <option>GBP</option>
+          <option>AED</option>
+          <option>INR</option>
+        </select>
+      </label>
+
+      <h4>🌐 Links</h4>
+      <label>Room Pictures Link:
+        <input type="url" class="room-photos" placeholder="https://example.com/photo" />
+      </label>
+
+      <label>Location Link:
+        <input type="url" class="location-link" placeholder="https://maps.app.goo.gl/..." />
+      </label>
+
+      <label>TripAdvisor Link:
+        <input type="url" class="tripadvisor-link" placeholder="https://tripadvisor.com/..." />
+      </label>
+
+      <hr />
+    </div>
+  </template>
+
+  <script src="js/app.min.js"></script>
+</body>
+</html>
