@@ -12,9 +12,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Input Section -->
     <div class="input-panel">
-      <!-- Replace the Hotel & Stay Details section -->
       <h2>🏨 Hotel & Stay Details</h2>
 
       <div class="input-grid">
@@ -44,7 +42,13 @@
 
         <div class="input-field">
           <span>Nights</span>
-          <input type="number" id="nightsCount" placeholder="e.g., 6" />
+          <div class="nights-group">
+            <input type="number" id="nightsCount" placeholder="e.g., 6" />
+            <label class="checkbox-label">
+              <input type="checkbox" id="autoNights" checked />
+              Night Counter
+            </label>
+          </div>
         </div>
 
         <div class="input-field">
@@ -93,7 +97,6 @@
       </div>
     </div>
 
-    <!-- Preview Section -->
     <div class="preview-panel">
       <h2>🧾 Live Quote Preview</h2>
       <pre id="quotePreview"></pre>
@@ -101,7 +104,6 @@
     </div>
   </div>
 
-  <!-- Room Template -->
   <template id="roomTemplate">
     <div class="room-block">
       <h3>✨ Room Option</h3>
@@ -113,11 +115,9 @@
         <select class="meal-plan">
           <option>Room Only</option>
           <option>Breakfast Included</option>
-          <option>Half Board</option>
-          <option>Full Board</option>
-          <option>All Inclusive</option>
-          <option>Ultra All Inclusive</option>
-          <option>Bed & Breakfast</option>
+          <option>Half-Board</option>
+          <option>Full-Board</option>
+          <option>All-Inclusive</option>
         </select>
       </label>
 
@@ -125,76 +125,20 @@
         <select class="refund">
           <option>Refundable</option>
           <option>Non-Refundable</option>
-          <option>Partially Refundable</option>
         </select>
       </label>
 
       <h4>💲 Entravel.com Pricing</h4>
-      <label>Base Price (USD):
+      <label>Rate price USD:
         <input type="number" class="base-price" />
       </label>
 
-      <label>Markup Percentage:
-        <select class="markup">
-          <option>0%</option>
-          <option>5%</option>
-          <option>10%</option>
-          <option>15%</option>
-          <option>20%</option>
-          <option>25%</option>
-          <option value="custom">Custom</option>
-        </select>
-        <input type="number" class="markup-custom" style="display:none;" placeholder="Custom %" />
+      <label>Markup %:
+        <input type="number" class="markup" value="5" />
       </label>
 
-      <label>Calculated Entravel Price (USD):
-        <input type="text" class="calculated-price" readonly />
-      </label>
-
-      <label>Optional Price per Night (USD):
-        <input type="number" class="per-night" />
-      </label>
-
-      <label>Optional Price in Other Currency:
-        <input type="number" class="alt-currency" />
-        <select class="alt-currency-type">
-          <option>EUR</option>
-          <option>GBP</option>
-          <option>AED</option>
-          <option>INR</option>
-        </select>
-      </label>
-
-      <h4>📊 Booking.com Comparison</h4>
-      <label>Booking.com Price (USD):
+      <label>Booking.com USD:
         <input type="number" class="booking-price" />
-      </label>
-
-      <label>Optional Price per Night:
-        <input type="number" class="booking-per-night" />
-      </label>
-
-      <label>Optional Price in Other Currency:
-        <input type="number" class="booking-alt-currency" />
-        <select class="booking-alt-currency-type">
-          <option>EUR</option>
-          <option>GBP</option>
-          <option>AED</option>
-          <option>INR</option>
-        </select>
-      </label>
-
-      <h4>🌐 Links</h4>
-      <label>Room Pictures Link:
-        <input type="url" class="room-photos" placeholder="https://example.com/photo" />
-      </label>
-
-      <label>Location Link:
-        <input type="url" class="location-link" placeholder="https://maps.app.goo.gl/..." />
-      </label>
-
-      <label>TripAdvisor Link:
-        <input type="url" class="tripadvisor-link" placeholder="https://tripadvisor.com/..." />
       </label>
 
       <hr />

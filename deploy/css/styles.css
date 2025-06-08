@@ -149,4 +149,21 @@ button:hover {
   margin-top: 20px;
 }
 
+.nights-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nights-group input[type="number"] {
+  width: 100px;
+}
+
+.nights-group .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
 /* Removed .input-group styles */

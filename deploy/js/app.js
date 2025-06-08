@@ -7,24 +7,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let rooms = [];
 
-  // Function to update quote when any input changes
   function handleInputChange() {
     renderQuote();
   }
 
-  // Add event listeners for all hotel & stay details inputs
   const inputs = [
     "hotelName",
     "hotelStars",
     "dateInput",
-    "nightsCount",
     "numAdults",
     "numChildren",
     "hotelPhotos",
     "locationLink",
     "tripAdvisorLink",
     "embedLinks",
-    "showEur"
+    "showEur",
+    "nightsCount",
+    "autoNights"
   ];
 
   inputs.forEach(id => {
@@ -53,6 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <select data-room="${index}" class="meal-plan">
           <option>Room Only</option>
           <option>Breakfast Included</option>
+          <option>Half-Board</option>
+          <option>Full-Board</option>
+          <option>All-Inclusive</option>
         </select>
       </div>
 
@@ -92,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     roomsContainer.appendChild(div);
 
-    // Update event listeners
     ["room-type", "meal-plan", "refund", "base-price", "base-price-eur", "markup", "booking-price", "booking-price-eur"]
       .forEach(cn => {
         const element = div.querySelector(`.${cn}`);
@@ -124,16 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  // Add event listener for EUR checkbox
   document.getElementById("showEur").addEventListener("change", function() {
     const showEur = this.checked;
     
-    // Update existing rooms
     rooms.forEach((_, index) => {
       const roomBlock = roomsContainer.children[index];
       if (!roomBlock) return;
 
-      // Add or remove EUR fields
       if (showEur) {
         const basePriceLabel = roomBlock.querySelector('.base-price').parentNode;
         const bookingPriceLabel = roomBlock.querySelector('.booking-price').parentNode;
@@ -178,11 +176,34 @@ document.addEventListener("DOMContentLoaded", () => {
     renderQuote();
   }
 
+  function calculateNights(dateString) {
+    const dates = dateString.split(/[-–]/).map(d => d.trim());
+    if (dates.length !== 2) return '';
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const currentYear = new Date().getFullYear();
+
+    function parseDate(dateStr) {
+      const [day, month] = dateStr.split(' ');
+      const monthIndex = months.findIndex(m => month.includes(m));
+      if (monthIndex === -1) return null;
+      return new Date(currentYear, monthIndex, parseInt(day));
+    }
+
+    const startDate = parseDate(dates[0]);
+    const endDate = parseDate(dates[1]);
+
+    if (!startDate || !endDate) return '';
+
+    const nights = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+    return nights > 0 ? nights : '';
+  }
+
   function renderQuote() {
     const hotel = document.getElementById("hotelName").value;
     const stars = document.getElementById("hotelStars").value.replace(" Star", "*");
     const dates = document.getElementById("dateInput").value;
-    const nights = document.getElementById("nightsCount").value;
+    const nights = document.getElementById("nightsCount").value || '0';
     const adults = document.getElementById("numAdults").value;
     const children = document.getElementById("numChildren").value;
 
@@ -190,18 +211,16 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const header = `🏨 ${hotel}, ${stars}
 🗓 Stay Dates: ${dates}
-${guestInfo}
-🌙 ${nights} Nights\n`;
-    
+🌙 ${nights} Nights
+${guestInfo}`;
+
     const showEur = document.getElementById("showEur").checked;
     
-    // Modified room text generation
     const roomsText = rooms.length ? rooms.map((r, i) => {
       if (!r.type) return '';
       const ourPrice = (r.base * (1 + r.markup / 100)).toFixed(2);
       const ourPriceEur = (r.baseEur * (1 + r.markup / 100)).toFixed(2);
       
-      // Different format for single room vs multiple rooms
       const roomHeader = rooms.length === 1 ? 
         `✨ ${r.type}` : 
         `✨ Option ${i + 1}: ${r.type}`;
@@ -218,11 +237,9 @@ ${roomHeader}
     const tripAdvisorLink = document.getElementById("tripAdvisorLink").value;
     const embedLinks = document.getElementById("embedLinks").checked;
 
-    // Create embedded links section
     const embeddedLinksText = embedLinks && (hotelPhotos || locationLink || tripAdvisorLink) ? `
 📍 ${locationLink ? `[Location](${locationLink})` : 'Location'} | 📸 ${hotelPhotos ? `[Room Photos](${hotelPhotos})` : 'Room Photos'} | ⭐ ${tripAdvisorLink ? `[TripAdvisor Reviews](${tripAdvisorLink})` : 'TripAdvisor Reviews'}\n` : '';
 
-    // Create regular links section if not embedded
     const linksArray = !embedLinks ? [
       ['Room Pictures', hotelPhotos],
       ['Location', locationLink],
@@ -233,7 +250,6 @@ ${roomHeader}
 🔗 Useful Links:
 ${linksArray.map(([label, value]) => `  • ${label}: ${value}`).join('\n')}` : '';
 
-    // Update preview with conditional sections
     preview.textContent = `${header}${embeddedLinksText}${roomsText ? '\n' + roomsText : ''}${linksText ? '\n' + linksText : ''}`;
   }
 
@@ -243,6 +259,25 @@ ${linksArray.map(([label, value]) => `  • ${label}: ${value}`).join('\n')}` : 
       .catch(() => alert("Copy failed."));
   });
 
-  // Initialize first render
+  document.getElementById("autoNights").addEventListener("change", function() {
+    const nightsInput = document.getElementById("nightsCount");
+    const dates = document.getElementById("dateInput").value;
+    
+    nightsInput.readOnly = this.checked;
+    if (this.checked && dates) {
+      nightsInput.value = calculateNights(dates) || '';
+    }
+  });
+
+  document.getElementById("dateInput").addEventListener("input", function() {
+    const autoNights = document.getElementById("autoNights").checked;
+    const nightsInput = document.getElementById("nightsCount");
+    
+    if (autoNights) {
+      nightsInput.value = calculateNights(this.value) || '';
+    }
+    renderQuote();
+  });
+
   renderQuote();
 });
