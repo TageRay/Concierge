@@ -7,10 +7,6 @@ node_modules/
 # Source maps
 *.map
 
-# Development versions
-css/styles.css
-js/app.js
-
 # Editor files
 .vscode/
 .idea/
