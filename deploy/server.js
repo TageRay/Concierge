@@ -2,7 +2,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Serve static files
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve the main application files
 app.use(express.static(__dirname));
 
 // Serve index.html for all routes
