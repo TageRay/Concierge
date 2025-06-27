@@ -164,3 +164,15 @@ button:hover {
   gap: 5px;
   white-space: nowrap;
 }
+
+#openShortenerBtn {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#openShortenerBtn:hover {
+  background: #2980b9;
+}

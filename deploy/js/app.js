@@ -292,5 +292,9 @@ ${linksArray.map(([label, value, emoji]) => `  • ${emoji}${label}: ${value}`).
     renderQuote();
   });
 
+  document.getElementById("openShortenerBtn").addEventListener("click", function() {
+    window.open("https://www.shorturl.at/", "_blank");
+  });
+
   renderQuote();
 });
