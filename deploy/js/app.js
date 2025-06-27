@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "embedLinks",
     "showEur",
     "nightsCount",
-    "autoNights"
+    "autoNights",
+    "showEmoji"
   ];
 
   inputs.forEach(id => {
@@ -206,25 +207,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const nights = document.getElementById("nightsCount").value || '0';
     const adults = document.getElementById("numAdults").value;
     const children = document.getElementById("numChildren").value;
+    const showEmoji = document.getElementById("showEmoji")?.checked;
 
-    const guestInfo = `👥 ${adults} Adult${adults > 1 ? 's' : ''}${children > 0 ? ` + ${children} Child${children > 1 ? 'ren' : ''}` : ''}`;
-    
-    const header = `🏨 ${hotel}, ${stars}
-🗓 Stay Dates: ${dates}
-🌙 ${nights} Nights
+    // Emoji or plain text labels
+    const hotelLabel = showEmoji ? "🏨 " : "";
+    const datesLabel = showEmoji ? "🗓 " : "";
+    const nightsLabel = showEmoji ? "🌙 " : "";
+    const guestLabel = showEmoji ? "👥 " : "";
+    const optionLabel = showEmoji ? "✨ " : "";
+    const linkLocation = showEmoji ? "📍 " : "";
+    const linkPhotos = showEmoji ? "📸 " : "";
+    const linkTrip = showEmoji ? "⭐ " : "";
+    const usefulLinks = showEmoji ? "🔗 " : "";
+
+    const guestInfo = `${guestLabel}${adults} Adult${adults > 1 ? 's' : ''}${children > 0 ? ` + ${children} Child${children > 1 ? 'ren' : ''}` : ''}`;
+
+    const header = `${hotelLabel}${hotel}, ${stars}
+${datesLabel}Stay Dates: ${dates}
+${nightsLabel}${nights} Nights
 ${guestInfo}`;
 
     const showEur = document.getElementById("showEur").checked;
-    
+
     const roomsText = rooms.length ? rooms.map((r, i) => {
       if (!r.type) return '';
       const ourPrice = (r.base * (1 + r.markup / 100)).toFixed(2);
       const ourPriceEur = (r.baseEur * (1 + r.markup / 100)).toFixed(2);
-      
-      const roomHeader = rooms.length === 1 ? 
-        `✨ ${r.type}` : 
-        `✨ Option ${i + 1}: ${r.type}`;
-      
+
+      const roomHeader = rooms.length === 1 ?
+        `${optionLabel}${r.type}` :
+        `${optionLabel}Option ${i + 1}: ${r.type}`;
+
       return `
 ${roomHeader}
   • Room Description: ${r.meal}, ${r.refund}
@@ -238,17 +251,17 @@ ${roomHeader}
     const embedLinks = document.getElementById("embedLinks").checked;
 
     const embeddedLinksText = embedLinks && (hotelPhotos || locationLink || tripAdvisorLink) ? `
-📍 ${locationLink ? `[Location](${locationLink})` : 'Location'} | 📸 ${hotelPhotos ? `[Room Photos](${hotelPhotos})` : 'Room Photos'} | ⭐ ${tripAdvisorLink ? `[TripAdvisor Reviews](${tripAdvisorLink})` : 'TripAdvisor Reviews'}\n` : '';
+${linkLocation}${locationLink ? `[Location](${locationLink})` : 'Location'} | ${linkPhotos}${hotelPhotos ? `[Room Photos](${hotelPhotos})` : 'Room Photos'} | ${linkTrip}${tripAdvisorLink ? `[TripAdvisor Reviews](${tripAdvisorLink})` : 'TripAdvisor Reviews'}\n` : '';
 
     const linksArray = !embedLinks ? [
-      ['Room Pictures', hotelPhotos],
-      ['Location', locationLink],
-      ['TripAdvisor', tripAdvisorLink]
+      ['Room Pictures', hotelPhotos, linkPhotos],
+      ['Location', locationLink, linkLocation],
+      ['TripAdvisor', tripAdvisorLink, linkTrip]
     ].filter(([_, value]) => value) : [];
 
     const linksText = !embedLinks && linksArray.length ? `
-🔗 Useful Links:
-${linksArray.map(([label, value]) => `  • ${label}: ${value}`).join('\n')}` : '';
+${usefulLinks}Useful Links:
+${linksArray.map(([label, value, emoji]) => `  • ${emoji}${label}: ${value}`).join('\n')}` : '';
 
     preview.textContent = `${header}${embeddedLinksText}${roomsText ? '\n' + roomsText : ''}${linksText ? '\n' + linksText : ''}`;
   }

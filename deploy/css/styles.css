@@ -86,7 +86,6 @@ button:hover {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* New styles */
 .input-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -165,5 +164,3 @@ button:hover {
   gap: 5px;
   white-space: nowrap;
 }
-
-/* Removed .input-group styles */
