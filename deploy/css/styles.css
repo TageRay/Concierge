@@ -1,3 +1,61 @@
+/* Responsive grid and layout adjustments */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+  .input-panel, .preview-panel {
+    padding: 12px;
+  }
+  .input-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  #roomsContainer {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .room-block {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .button-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .checkbox-group {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  #quotePreview {
+    font-size: 0.95em;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0;
+  }
+  .input-panel, .preview-panel {
+    padding: 6px;
+  }
+  h2 {
+    font-size: 1.1em;
+  }
+  #quotePreview {
+    font-size: 0.9em;
+    padding: 6px;
+  }
+  button, #openShortenerBtn {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
 :root {
   --primary: #2c3e50;
   --accent: #3498db;
