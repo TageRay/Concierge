@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const div = document.createElement("div");
     div.className = "room-block";
     const showEur = document.getElementById("showEur").checked;
-    
+
     div.innerHTML = `
       <h3>Room ${index + 1}</h3>
       
@@ -92,17 +92,24 @@ document.addEventListener("DOMContentLoaded", () => {
         <span>Booking.com EUR</span>
         <input type="number" data-room="${index}" class="booking-price-eur" />
       </div>` : ''}
+
+      <div class="input-field room-pictures-field" style="grid-column: span 2;">
+        <span>Room Pictures</span>
+        <input type="url" data-room="${index}" class="room-pictures" placeholder="https://example.com/room-photos" />
+      </div>
     `;
     roomsContainer.appendChild(div);
 
-    ["room-type", "meal-plan", "refund", "base-price", "base-price-eur", "markup", "booking-price", "booking-price-eur"]
-      .forEach(cn => {
-        const element = div.querySelector(`.${cn}`);
-        if (element) {
-          element.addEventListener("input", updateRooms);
-          element.addEventListener("change", updateRooms);
-        }
-      });
+    [
+      "room-type", "meal-plan", "refund", "base-price", "base-price-eur",
+      "markup", "booking-price", "booking-price-eur", "room-pictures"
+    ].forEach(cn => {
+      const element = div.querySelector(`.${cn}`);
+      if (element) {
+        element.addEventListener("input", updateRooms);
+        element.addEventListener("change", updateRooms);
+      }
+    });
   }
 
   addRoomBtn.addEventListener("click", () => {
@@ -172,7 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
       markup: parseFloat(block.querySelector(".markup").value) || 0,
       booking: parseFloat(block.querySelector(".booking-price").value) || 0,
       baseEur: parseFloat(block.querySelector(".base-price-eur")?.value) || 0,
-      bookingEur: parseFloat(block.querySelector(".booking-price-eur")?.value) || 0
+      bookingEur: parseFloat(block.querySelector(".booking-price-eur")?.value) || 0,
+      roomPictures: block.querySelector(".room-pictures")?.value || ""
     }));
     renderQuote();
   }
@@ -238,11 +246,17 @@ ${guestInfo}`;
         `${optionLabel}${r.type}` :
         `${optionLabel}Option ${i + 1}: ${r.type}`;
 
-      return `
+      let roomBlock = `
 ${roomHeader}
   • Room Description: ${r.meal}, ${r.refund}
   • Entravel.com: ${formatNumber(Math.round(ourPrice))} USD${showEur ? ` / ${formatNumber(Math.round(ourPriceEur))} EUR` : ''}
   • Booking.com: ${formatNumber(Math.round(r.booking))} USD${showEur ? ` / ${formatNumber(Math.round(r.bookingEur))} EUR` : ''}`;
+
+      if (r.roomPictures) {
+        roomBlock += `\n  Room Pictures: ${r.roomPictures}`;
+      }
+
+      return roomBlock;
     }).filter(text => text).join('\n⸻\n') : '';
 
     const hotelPhotos = document.getElementById("hotelPhotos").value;
@@ -251,7 +265,7 @@ ${roomHeader}
     const embedLinks = document.getElementById("embedLinks").checked;
 
     const embeddedLinksText = embedLinks && (hotelPhotos || locationLink || tripAdvisorLink) ? `
-${linkLocation}${locationLink ? `[Location](${locationLink})` : 'Location'} | ${linkPhotos}${hotelPhotos ? `[Room Photos](${hotelPhotos})` : 'Room Photos'} | ${linkTrip}${tripAdvisorLink ? `[TripAdvisor Reviews](${tripAdvisorLink})` : 'TripAdvisor Reviews'}\n` : '';
+${linkLocation}${locationLink ? `[Location](${locationLink})` : 'Location'} | ${linkPhotos}${hotelPhotos ? `[Room Pictures](${hotelPhotos})` : 'Room Pictures'} | ${linkTrip}${tripAdvisorLink ? `[TripAdvisor Reviews](${tripAdvisorLink})` : 'TripAdvisor Reviews'}\n` : '';
 
     const linksArray = !embedLinks ? [
       ['Room Pictures', hotelPhotos, linkPhotos],

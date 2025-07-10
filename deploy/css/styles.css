@@ -234,3 +234,7 @@ button:hover {
 #openShortenerBtn:hover {
   background: #2980b9;
 }
+
+.room-block .room-pictures-field {
+  grid-column: span 2;
+}
