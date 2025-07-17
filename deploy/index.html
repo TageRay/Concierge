@@ -13,7 +13,13 @@
 <body>
   <div class="container">
     <div class="input-panel">
-      <h2>🏨 Hotel & Stay Details</h2>
+      <div class="header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h2>🏨 Hotel & Stay Details</h2>
+        <div class="header-buttons" style="display: flex; gap: 10px;">
+          <button id="currencyConverterBtn" type="button">💱 Currency Converter</button>
+          <button id="resetBtn" type="button">🔄 Start Over</button>
+        </div>
+      </div>
 
       <div class="input-grid">
         <div class="input-field">
@@ -24,6 +30,7 @@
         <div class="input-field">
           <span>Hotel Stars</span>
           <select id="hotelStars">
+            <option value="" selected>-- Select Hotel Stars --</option>
             <option>5 Star</option>
             <option>4 Star</option>
             <option>3 Star</option>
@@ -36,19 +43,12 @@
         </div>
 
         <div class="input-field">
-          <span>Stay Dates</span>
-          <input type="text" id="dateInput" placeholder="12 July – 18 July" />
+          <span>Check-in Date</span>
+          <input type="date" id="checkInDate" />
         </div>
-
         <div class="input-field">
-          <span>Nights</span>
-          <div class="nights-group">
-            <input type="number" id="nightsCount" placeholder="e.g., 6" />
-            <label class="checkbox-label">
-              <input type="checkbox" id="autoNights" checked />
-              Night Counter
-            </label>
-          </div>
+          <span>Check-out Date</span>
+          <input type="date" id="checkOutDate" />
         </div>
 
         <div class="input-field">
@@ -78,14 +78,24 @@
 
         <button id="openShortenerBtn" type="button" style="height: 36px; align-self:flex-end; margin-bottom: 4px;">🔗 Open Link Shortener </button>
 
+        <div class="input-field">
+          <span>Secondary Currency</span>
+          <input type="text" id="secondaryCurrency" placeholder="e.g., EUR, GBP, AUS" />
+        </div>
+
+        <div class="input-field">
+          <span>Exchange Rate</span>
+          <input type="number" id="exchangeRate" placeholder="e.g., 0.74" step="0.01" />
+        </div>
+
         <div class="checkbox-group">
           <label class="checkbox-label">
             <input type="checkbox" id="embedLinks" />
             Embed Links
           </label>
           <label class="checkbox-label">
-            <input type="checkbox" id="showEur" />
-            EUR
+            <input type="checkbox" id="showSecondaryCurrency" />
+            Secondary currency
           </label>
           <label class="checkbox-label">
             <input type="checkbox" id="showEmoji" />
